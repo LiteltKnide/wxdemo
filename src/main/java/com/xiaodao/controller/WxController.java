@@ -1,7 +1,11 @@
 package com.xiaodao.controller;
 
 import me.chanjar.weixin.common.exception.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpConfigStorage;
+import me.chanjar.weixin.mp.api.WxMpMessageRouter;
 import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlMessage;
+import me.chanjar.weixin.mp.bean.message.WxMpXmlOutMessage;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateData;
 import me.chanjar.weixin.mp.bean.template.WxMpTemplateMessage;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +28,10 @@ public class WxController {
 
     @Autowired
     WxMpService wxMpService;
+    @Autowired
+    WxMpConfigStorage wxMpConfigStorage;
+    @Autowired
+    WxMpMessageRouter wxMpMessageRouter;
 
     @RequestMapping("/test")
     public String test() {
@@ -60,6 +68,59 @@ public class WxController {
 
         return "非法请求";
     }
+
+    @PostMapping(value = { "/{wxname:wx\\w+|weixin\\w+}"}, produces = "application/xml; charset=UTF-8")
+    protected void doMessage(@PathVariable("wxname") String wxname,
+                             @RequestParam(name = "signature",
+                                     required = false) String signature,
+                             @RequestParam(name = "timestamp",
+                                     required = false) String timestamp,
+                             @RequestParam(name = "nonce", required = false) String nonce,
+                             HttpServletRequest request,
+                             HttpServletResponse response) throws Exception {
+        logger.info("POST from wxid {}", wxname);
+        logger.info("RemoteAddr: " + request.getRemoteAddr());
+        logger.info("QueryString: " + request.getQueryString());
+        logger.info("request URI:" + request.getRequestURI());
+        logger.info("request UserAgent:" + request.getHeader("User-Agent"));
+        logger.info("request Server:" + request.getLocalAddr());
+        String echostr = request.getParameter("echostr");
+        if (StringUtils.isNotBlank(echostr)) {
+            // 说明是一个仅仅用来验证的请求，回显echostr
+            response.getWriter().println(echostr);
+            return;
+        }
+
+        String encryptType = StringUtils.isBlank(request.getParameter("encrypt_type")) ?
+                "raw" :
+                request.getParameter("encrypt_type");
+
+        WxMpXmlMessage inMessage = null;
+
+        if ("raw".equals(encryptType)) {
+            // 明文传输的消息
+            inMessage = WxMpXmlMessage.fromXml(request.getInputStream());
+        } else if ("aes".equals(encryptType)) {
+            // 是aes加密的消息
+            String msgSignature = request.getParameter("msg_signature");
+            inMessage = WxMpXmlMessage.fromEncryptedXml(request.getInputStream(), wxMpConfigStorage, timestamp, nonce, msgSignature);
+        } else {
+            response.getWriter().println("不可识别的加密类型");
+            return;
+        }
+
+        WxMpXmlOutMessage outMessage = wxMpMessageRouter.route(inMessage);
+
+        if (outMessage != null) {
+            if ("raw".equals(encryptType)) {
+                response.getWriter().write(outMessage.toXml());
+            } else if ("aes".equals(encryptType)) {
+                response.getWriter().write(outMessage.toEncryptedXml(wxMpConfigStorage));
+            }
+            return;
+        }
+    }
+
 
     @RequestMapping("/sendText")
     public void sendTextMessage() {

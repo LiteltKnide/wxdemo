@@ -1,5 +1,6 @@
 package com.xiaodao.config;
 
+import com.xiaodao.setting.WechatSetting;
 import me.chanjar.weixin.mp.api.WxMpConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpInMemoryConfigStorage;
 import me.chanjar.weixin.mp.api.WxMpService;

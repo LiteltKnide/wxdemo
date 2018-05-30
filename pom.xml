@@ -37,10 +37,17 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- 微信公众号框架依赖 -->
 		<dependency>
 			<groupId>com.github.binarywang</groupId>
 			<artifactId>weixin-java-mp</artifactId>
 			<version>2.9.0</version>
+		</dependency>
+
+		<!-- ActiveMQ -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-activemq</artifactId>
 		</dependency>
 
 	</dependencies>

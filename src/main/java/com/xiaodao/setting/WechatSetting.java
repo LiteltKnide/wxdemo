@@ -1,4 +1,4 @@
-package com.xiaodao.config;
+package com.xiaodao.setting;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

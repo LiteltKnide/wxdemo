@@ -2,13 +2,18 @@ server:
   port: 80
   tomcat:
     max-http-post-size: 1048000
-
 wechat:
   mpAppId: wx2881e3092b5ab7e3
   mpAppSecret: f283bbf9e1e9ca8fd53062fe8d594aa2
   mpToken: xfp
   mpAesKey:
-
 spring:
   application:
     name: xiaodao
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+    in-memory: true
+    pool:
+      enabled: false

@@ -1,8 +1,6 @@
 package com.xiaodao.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jms.core.JmsMessagingTemplate;
 
 /**
  * Created by hujt49 on 2018/05/30.
@@ -10,8 +8,13 @@ import org.springframework.jms.core.JmsMessagingTemplate;
 @Configuration
 public class JMSConfiguration {
 
-    @Bean
-    public JmsMessagingTemplate jmsMessagingTemplate() {
-        return new JmsMessagingTemplate();
-    }
+    // @Bean
+    // public JmsMessagingTemplate jmsMessagingTemplate(JmsTemplate jmsTemplate) {
+    //     return new JmsMessagingTemplate(jmsTemplate);
+    // }
+
+    // @Bean
+    // public JmsTemplate jmsTemplate() {
+    //     return new JmsTemplate();
+    // }
 }

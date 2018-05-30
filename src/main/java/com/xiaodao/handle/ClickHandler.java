@@ -16,13 +16,13 @@ import java.util.Map;
 public class ClickHandler extends UserRelatedHandler {
     @Override
     public WxMpXmlOutMessage handle(WxMpXmlMessage wxMpXmlMessage, Map<String, Object> map, WxMpService wxMpService, WxSessionManager wxSessionManager) throws WxErrorException {
-        if (wxMpXmlMessage.getEventKey().equals("HOWEINV")) {
-           return createRevertScanInvText(wxMpXmlMessage, "电子发票的开票方式因商家而异，具体请向商家咨询。如在开票过程中遇到问题，请随时咨询微信客服，我们将竭诚为您服务。");
-        } else if (wxMpXmlMessage.getEventKey().equals("TAIKWME")) {
-            return createRevertScanInvText(wxMpXmlMessage, "请回复您遇到的问题关键词，智能客服将尽快为您解答。");
-        } else if (wxMpXmlMessage.getEventKey().equals("FINDQRC")) {
-            return createRevertPic(wxMpXmlMessage, "OEPRgxOhhYtvjM78Fz2cXRe5JfyerqqHbOo9bbGXJ1k");
-        }
+        // if (wxMpXmlMessage.getEventKey().equals("HOWEINV")) {
+        //    return createRevertScanInvText(wxMpXmlMessage, "电子发票的开票方式因商家而异，具体请向商家咨询。如在开票过程中遇到问题，请随时咨询微信客服，我们将竭诚为您服务。");
+        // } else if (wxMpXmlMessage.getEventKey().equals("TAIKWME")) {
+        //     return createRevertScanInvText(wxMpXmlMessage, "请回复您遇到的问题关键词，智能客服将尽快为您解答。");
+        // } else if (wxMpXmlMessage.getEventKey().equals("FINDQRC")) {
+        //     return createRevertPic(wxMpXmlMessage, "OEPRgxOhhYtvjM78Fz2cXRe5JfyerqqHbOo9bbGXJ1k");
+        // }
        return null;
     }
 }

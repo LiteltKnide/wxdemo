@@ -16,6 +16,6 @@ public class TestQueueListener {
 
     @JmsListener(destination = QueuesName.TEST_QUEUE)
     public void onMessage(String text) {
-        logger.info("测试接收消息:{}", text);
+        logger.info("测试接收消息:{}-{}", text, System.currentTimeMillis());
     }
 }
